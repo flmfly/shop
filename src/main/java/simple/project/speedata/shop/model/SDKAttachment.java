@@ -54,7 +54,7 @@ public class SDKAttachment extends BaseModel implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "SDK_ID")
-	private SDKRequest sdk;
+	private SDK sdk;
 
 	public String getPath() {
 		return path;
@@ -80,11 +80,11 @@ public class SDKAttachment extends BaseModel implements Serializable {
 		this.size = size;
 	}
 
-	public SDKRequest getSdk() {
+	public SDK getSdk() {
 		return sdk;
 	}
 
-	public void setSdk(SDKRequest sdk) {
+	public void setSdk(SDK sdk) {
 		this.sdk = sdk;
 	}
 

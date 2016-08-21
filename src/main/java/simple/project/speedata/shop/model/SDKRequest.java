@@ -1,30 +1,32 @@
 package simple.project.speedata.shop.model;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.validator.constraints.Length;
 
-import simple.base.BaseModel;
 import simple.config.annotation.AssociateTableColumn;
-import simple.config.annotation.Attachment;
+import simple.config.annotation.DataLength;
+import simple.config.annotation.DefaultValue;
 import simple.config.annotation.Domain;
 import simple.config.annotation.Reference;
 import simple.config.annotation.RepresentationField;
 import simple.config.annotation.RepresentationFieldType;
+import simple.config.annotation.TableColumn;
 import simple.config.annotation.Title;
+import simple.config.annotation.support.DateTimeDefaultValueHandler;
 import simple.core.validation.annotation.UniqueKey;
 
 @Domain
@@ -34,9 +36,16 @@ import simple.core.validation.annotation.UniqueKey;
 @SequenceGenerator(name = "SEQ_SPEEDATA_SDK", sequenceName = "SEQ_SPEEDATA_SDK")
 @GenericGenerator(name = "idStrategy", strategy = "native", parameters = {
 		@Parameter(name = "sequence", value = "SEQ_SPEEDATA_SDK") })
-public class SDK extends BaseModel implements Serializable {
+public class SDKRequest implements Serializable {
 
 	private static final long serialVersionUID = -2222299541763024789L;
+
+	@Id
+	@GeneratedValue(generator = "idStrategy")
+	@Column(name = "ID")
+	@RepresentationField(view = RepresentationFieldType.HIDDEN)
+	@TableColumn(title = "id", show = false)
+	private Long id;
 
 	@ManyToOne
 	@JoinColumn(name = "PRODUCT_ID")
@@ -45,12 +54,28 @@ public class SDK extends BaseModel implements Serializable {
 	@AssociateTableColumn(titles = "产品编码,产品名称", columns = "code,name")
 	private Product product;
 
-	@OneToMany(mappedBy = "sdk", fetch = FetchType.LAZY)
-	@Cascade({ CascadeType.ALL })
-	@Title("文件")
-	@RepresentationField(view = RepresentationFieldType.ATTACHMENT)
-	@Attachment(fileName = "fileName", url = "url", size = "size", maxSize = 2097152 * 100)
-	private Set<SDKAttachment> sdkAttachments = new HashSet<SDKAttachment>(0);
+	@Column(name = "EMAIL", length = DataLength.LONG_TEXT_LENGTH)
+	@Title("邮箱")
+	@RepresentationField(sort = 10, isSearchField = true)
+	@TableColumn
+	@NotNull(message = "邮箱不能为空！")
+	@Length(max = DataLength.LONG_TEXT_LENGTH)
+	private String email;
+
+	@Column(name = "CREATE_TIME")
+	@Title("请求下载时间")
+	@RepresentationField(sort = 99996, view = RepresentationFieldType.DATETIME, disable = true)
+	@TableColumn
+	@DefaultValue(handler = DateTimeDefaultValueHandler.class)
+	private Date createTime;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public Product getProduct() {
 		return product;
@@ -60,12 +85,20 @@ public class SDK extends BaseModel implements Serializable {
 		this.product = product;
 	}
 
-	public Set<SDKAttachment> getSdkAttachments() {
-		return sdkAttachments;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setSdkAttachments(Set<SDKAttachment> sdkAttachments) {
-		this.sdkAttachments = sdkAttachments;
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
 }

@@ -50,10 +50,10 @@ public class ShopDBInitService implements InitializingBean {
 		bm.setIconCss("fa fa-university");
 		bm.setSort(10);
 		bm = this.insertIfNotExist(bm, "code", bm.getCode());
-		
+
 		this.saveMenu("shop_product_category", "产品分类", "/list/productcategory", "010001", "fa fa-th-large", 10, bm);
 		this.saveMenu("shop_product", "产品", "/list/product", "010002", "fa fa-product-hunt", 20, bm);
-		this.saveMenu("shop_sdkrequest", "SDK维护", "/list/sdkrequest", "010003", "fa fa-suitcase", 30, bm);
+		this.saveMenu("shop_sdk", "SDK维护", "/list/sdk", "010003", "fa fa-suitcase", 30, bm);
 
 		bm = new BaseMenu();
 		bm.setCode("020");
@@ -63,7 +63,7 @@ public class ShopDBInitService implements InitializingBean {
 		bm = this.insertIfNotExist(bm, "code", bm.getCode());
 
 		this.saveMenu("shop_trade", "行业应用", "/tree/trade", "020001", "fa fa-industry", 10, bm);
-		
+
 		bm = new BaseMenu();
 		bm.setCode("030");
 		bm.setName("应用数据");
@@ -72,6 +72,7 @@ public class ShopDBInitService implements InitializingBean {
 		bm = this.insertIfNotExist(bm, "code", bm.getCode());
 
 		this.saveMenu("shop_enquiry", "报价列表", "/list/enquiry", "030001", "fa fa-money", 10, bm);
+		this.saveMenu("shop_sdk_request", "SDK下载请求", "/list/sdkrequest", "030002", "fa fa-download", 20, bm);
 
 		// this.saveMenu("base_resource", "资源维护", "/list/baseresource",
 		// "001001",

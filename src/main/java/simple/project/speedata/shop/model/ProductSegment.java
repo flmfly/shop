@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -16,32 +18,31 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.validator.constraints.Length;
 
-import simple.base.BaseValiditySupportModel;
 import simple.config.annotation.AssociateTableColumn;
 import simple.config.annotation.DataLength;
 import simple.config.annotation.Domain;
 import simple.config.annotation.Reference;
 import simple.config.annotation.RepresentationField;
 import simple.config.annotation.RepresentationFieldType;
-import simple.config.annotation.RepresentationLayout;
-import simple.config.annotation.RepresentationLayoutType;
 import simple.config.annotation.TableColumn;
 import simple.config.annotation.Title;
-import simple.config.annotation.TreeInfo;
-import simple.core.validation.annotation.UniqueKey;
 
 @Domain(defaultSort = "sort")
 @Entity
-@Table(name = "SPEEDATA_SHOP_TRADE")
-@UniqueKey(columnNames = { "name" }, message = "行业名称已存在！")
-@TreeInfo(id = "id", label = "name", pid = "parent.id")
-@RepresentationLayout(view = RepresentationLayoutType.TREE, id = "id", label = "name", pid = "parent.id")
-@SequenceGenerator(name = "SEQ_SPEEDATA_SHOP_TRADE", sequenceName = "SEQ_SPEEDATA_SHOP_TRADE")
+@Table(name = "SPEEDATA_PRODUCT_SEGMENT")
+@SequenceGenerator(name = "SEQ_SPEEDATA_PRODUCT_SEGMENT", sequenceName = "SEQ_SPEEDATA_PRODUCT_SEGMENT")
 @GenericGenerator(name = "idStrategy", strategy = "native", parameters = {
-		@Parameter(name = "sequence", value = "SEQ_SPEEDATA_SHOP_TRADE") })
-public class Trade extends BaseValiditySupportModel implements Serializable {
+		@Parameter(name = "sequence", value = "SEQ_SPEEDATA_PRODUCT_SEGMENT") })
+public class ProductSegment implements Serializable {
 
-	private static final long serialVersionUID = -5417250117391305303L;
+	private static final long serialVersionUID = -2222299541763024789L;
+
+	@Id
+	@GeneratedValue(generator = "idStrategy")
+	@Column(name = "ID")
+	@RepresentationField(view = RepresentationFieldType.HIDDEN)
+	@TableColumn(title = "id", show = false)
+	private Long id;
 
 	@Column(name = "NAME", length = DataLength.NAME_LENGTH)
 	@RepresentationField(sort = 20, title = "名称", isSearchField = true)
@@ -51,12 +52,11 @@ public class Trade extends BaseValiditySupportModel implements Serializable {
 	private String name;
 
 	@ManyToOne
-	@JoinColumn(name = "PARENT_ID")
-	@Title("所属上级")
-	@RepresentationField(sort = 40, view = RepresentationFieldType.REFERENCE, isSearchField = true)
-	@Reference(id = "id", label = "name", pid = "parent.id")
-	@AssociateTableColumn(sorts = "40", titles = "所属上级", columns = "name")
-	private Trade parent;
+	@JoinColumn(name = "PRODUCT_ID")
+	@RepresentationField(sort = 5, title = "所属产品", view = RepresentationFieldType.REFERENCE, isSearchField = true)
+	@Reference(id = "id", label = "name")
+	@AssociateTableColumn(titles = "所属产品", columns = "name")
+	private Product product;
 
 	@Column(name = "SORT", columnDefinition = "NUMERIC(4,0)")
 	@RepresentationField(sort = 50, title = "排序")
@@ -69,6 +69,14 @@ public class Trade extends BaseValiditySupportModel implements Serializable {
 	@RepresentationField(view = RepresentationFieldType.HTML_EDITOR, sort = 60)
 	private String content;
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -77,20 +85,20 @@ public class Trade extends BaseValiditySupportModel implements Serializable {
 		this.name = name;
 	}
 
-	public Trade getParent() {
-		return parent;
-	}
-
-	public void setParent(Trade parent) {
-		this.parent = parent;
-	}
-
 	public Integer getSort() {
 		return sort;
 	}
 
 	public void setSort(Integer sort) {
 		this.sort = sort;
+	}
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
 	}
 
 	public String getContent() {
