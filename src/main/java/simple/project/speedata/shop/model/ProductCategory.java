@@ -1,9 +1,13 @@
 package simple.project.speedata.shop.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.DecimalMax;
@@ -14,9 +18,12 @@ import org.hibernate.annotations.Parameter;
 import org.hibernate.validator.constraints.Length;
 
 import simple.base.BaseValiditySupportModel;
+import simple.config.annotation.Attachment;
 import simple.config.annotation.DataLength;
 import simple.config.annotation.Domain;
+import simple.config.annotation.ImageGalleryTableColumn;
 import simple.config.annotation.RepresentationField;
+import simple.config.annotation.RepresentationFieldType;
 import simple.config.annotation.TableColumn;
 import simple.config.annotation.Title;
 import simple.config.annotation.TreeInfo;
@@ -51,6 +58,13 @@ public class ProductCategory extends BaseValiditySupportModel implements Seriali
 	@NotNull(message = "名称不能为空！")
 	@Length(max = DataLength.NAME_LENGTH)
 	private String name;
+
+	@OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+	@RepresentationField(title = "图片", view = RepresentationFieldType.ATTACHMENT, sort = 55)
+	@TableColumn(title = "图片", sort = 285)
+	@ImageGalleryTableColumn(field = "attachment", url = "url", isFileStyle = false, isArray = true, fileNameProperty = "fileName")
+	@Attachment(fileName = "fileName", url = "url", size = "size", maxSize = 92160, type = "image/gif,image/png,image/jpeg,image/jpg", width = 1024, height = 1024)
+	private Set<ProductCategoryPicture> attachment = new HashSet<ProductCategoryPicture>(0);
 
 	@Column(name = "SORT", columnDefinition = "NUMERIC(4,0)")
 	@RepresentationField(sort = 50, title = "排序")
@@ -87,6 +101,14 @@ public class ProductCategory extends BaseValiditySupportModel implements Seriali
 
 	public void setSort(Integer sort) {
 		this.sort = sort;
+	}
+
+	public Set<ProductCategoryPicture> getAttachment() {
+		return attachment;
+	}
+
+	public void setAttachment(Set<ProductCategoryPicture> attachment) {
+		this.attachment = attachment;
 	}
 
 }
