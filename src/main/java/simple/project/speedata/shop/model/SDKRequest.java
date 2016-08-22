@@ -24,6 +24,7 @@ import simple.config.annotation.Domain;
 import simple.config.annotation.Reference;
 import simple.config.annotation.RepresentationField;
 import simple.config.annotation.RepresentationFieldType;
+import simple.config.annotation.SearchField;
 import simple.config.annotation.TableColumn;
 import simple.config.annotation.Title;
 import simple.config.annotation.support.DateTimeDefaultValueHandler;
@@ -57,15 +58,16 @@ public class SDKRequest implements Serializable {
 	@Column(name = "EMAIL", length = DataLength.LONG_TEXT_LENGTH)
 	@Title("邮箱")
 	@RepresentationField(sort = 10, isSearchField = true)
-	@TableColumn
+	@TableColumn(title = "邮箱")
 	@NotNull(message = "邮箱不能为空！")
 	@Length(max = DataLength.LONG_TEXT_LENGTH)
 	private String email;
 
 	@Column(name = "CREATE_TIME")
 	@Title("请求下载时间")
-	@RepresentationField(sort = 99996, view = RepresentationFieldType.DATETIME, disable = true)
-	@TableColumn
+	@RepresentationField(sort = 99996, view = RepresentationFieldType.DATE, disable = true)
+	@TableColumn(title = "请求下载时间")
+	@SearchField(isRange = true)
 	@DefaultValue(handler = DateTimeDefaultValueHandler.class)
 	private Date createTime;
 
