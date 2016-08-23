@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -21,9 +22,12 @@ import org.hibernate.annotations.Parameter;
 import org.hibernate.validator.constraints.Length;
 
 import simple.base.BaseValiditySupportModel;
+import simple.base.model.BaseDictItem;
 import simple.config.annotation.AssociateTableColumn;
 import simple.config.annotation.Attachment;
+import simple.config.annotation.BooleanValue;
 import simple.config.annotation.DataLength;
+import simple.config.annotation.DictField;
 import simple.config.annotation.Domain;
 import simple.config.annotation.ImageGalleryTableColumn;
 import simple.config.annotation.Operation;
@@ -34,6 +38,7 @@ import simple.config.annotation.RepresentationFieldType;
 import simple.config.annotation.TableColumn;
 import simple.config.annotation.Title;
 import simple.config.annotation.TreeInfo;
+import simple.core.jpa.convert.BooleanToStringConverter;
 import simple.core.validation.annotation.UniqueKey;
 import simple.project.speedata.shop.support.ProductSyncOperation;
 
@@ -105,6 +110,92 @@ public class Product extends BaseValiditySupportModel implements Serializable {
 	@Lob
 	@RepresentationField(view = RepresentationFieldType.HTML_EDITOR, sort = 60)
 	private String spec;
+
+	@ManyToOne
+	@JoinColumn(name = "OS")
+	@RepresentationField(sort = 70, title = "操作系统", view = RepresentationFieldType.SELECT, isSearchField = true)
+	@DictField("os")
+	@Reference(id = "id", label = "name")
+	@AssociateTableColumn(titles = "操作系统", columns = "name", sorts = "50")
+	private BaseDictItem os;
+
+	@ManyToOne
+	@JoinColumn(name = "COMMUNICATE")
+	@RepresentationField(sort = 70, title = "通讯模块", view = RepresentationFieldType.SELECT, isSearchField = true)
+	@DictField("communicate")
+	@Reference(id = "id", label = "name")
+	@AssociateTableColumn(titles = "通讯模块", columns = "name", sorts = "50")
+	private BaseDictItem communicate;
+
+	@ManyToOne
+	@JoinColumn(name = "COMMUNICATE")
+	@RepresentationField(sort = 70, title = "WIFI", view = RepresentationFieldType.SELECT, isSearchField = true)
+	@DictField("wifi")
+	@Reference(id = "id", label = "name")
+	@AssociateTableColumn(titles = "WIFI", columns = "name", sorts = "50")
+	private BaseDictItem wifi;
+
+	@ManyToOne
+	@JoinColumn(name = "SIZE")
+	@RepresentationField(sort = 70, title = "屏幕尺寸", view = RepresentationFieldType.SELECT, isSearchField = true)
+	@DictField("screenSize")
+	@Reference(id = "id", label = "name")
+	@AssociateTableColumn(titles = "屏幕尺寸", columns = "name", sorts = "50")
+	private BaseDictItem size;
+
+	@ManyToOne
+	@JoinColumn(name = "SCAN")
+	@RepresentationField(sort = 70, title = "条码扫描", view = RepresentationFieldType.SELECT, isSearchField = true)
+	@DictField("barcodeScan")
+	@Reference(id = "id", label = "name")
+	@AssociateTableColumn(titles = "条码扫描", columns = "name", sorts = "50")
+	private BaseDictItem scan;
+
+	@ManyToOne
+	@JoinColumn(name = "RFID")
+	@RepresentationField(sort = 70, title = "RFID", view = RepresentationFieldType.SELECT, isSearchField = true)
+	@DictField("rfid")
+	@Reference(id = "id", label = "name")
+	@AssociateTableColumn(titles = "RFID", columns = "name", sorts = "50")
+	private BaseDictItem rfid;
+
+	@ManyToOne
+	@JoinColumn(name = "FINGERPRINT")
+	@RepresentationField(sort = 70, title = "指纹识别", view = RepresentationFieldType.SELECT, isSearchField = true)
+	@DictField("fingerprint")
+	@Reference(id = "id", label = "name")
+	@AssociateTableColumn(titles = "指纹识别", columns = "name", sorts = "50")
+	private BaseDictItem fingerprint;
+
+	@ManyToOne
+	@JoinColumn(name = "PRINTER")
+	@RepresentationField(sort = 70, title = "打印机", view = RepresentationFieldType.SELECT, isSearchField = true)
+	@DictField("printer")
+	@Reference(id = "id", label = "name")
+	@AssociateTableColumn(titles = "打印机", columns = "name", sorts = "50")
+	private BaseDictItem printer;
+
+	@ManyToOne
+	@JoinColumn(name = "TEMPERATURE")
+	@RepresentationField(sort = 70, title = "温度模块", view = RepresentationFieldType.SELECT, isSearchField = true)
+	@DictField("temperature")
+	@Reference(id = "id", label = "name")
+	@AssociateTableColumn(titles = "温度模块", columns = "name", sorts = "50")
+	private BaseDictItem temperature;
+
+	@ManyToOne
+	@JoinColumn(name = "INFRARED")
+	@RepresentationField(sort = 70, title = "红外模块", view = RepresentationFieldType.SELECT, isSearchField = true)
+	@DictField("infrared")
+	@Reference(id = "id", label = "name")
+	@AssociateTableColumn(titles = "红外模块", columns = "name", sorts = "50")
+	private BaseDictItem infrared;
+
+	@Column(name = "IS_ANTI", columnDefinition = "CHAR(1)")
+	@RepresentationField(title = "防爆功能", sort = 99995, view = RepresentationFieldType.BOOLEAN)
+	@BooleanValue({ "需要", "不需要" })
+	@Convert(converter = BooleanToStringConverter.class)
+	private Boolean isAnti;
 
 	public Long getRemoteId() {
 		return remoteId;
