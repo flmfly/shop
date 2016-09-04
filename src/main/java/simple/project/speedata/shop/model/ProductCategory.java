@@ -63,7 +63,8 @@ public class ProductCategory extends BaseValiditySupportModel implements Seriali
 	@RepresentationField(title = "图片", view = RepresentationFieldType.ATTACHMENT, sort = 55)
 	@TableColumn(title = "图片", sort = 285)
 	@ImageGalleryTableColumn(field = "attachment", url = "url", isFileStyle = false, isArray = true, fileNameProperty = "fileName")
-	@Attachment(fileName = "fileName", url = "url", size = "size", maxSize = 92160, type = "image/gif,image/png,image/jpeg,image/jpg", width = 1024, height = 1024)
+	@Attachment(fileName = "fileName", url = "url", size = "size", maxSize = 1024
+			* 1204, type = "image/gif,image/png,image/jpeg,image/jpg", width = 1024, height = 1024)
 	private Set<ProductCategoryPicture> attachment = new HashSet<ProductCategoryPicture>(0);
 
 	@Column(name = "SORT", columnDefinition = "NUMERIC(4,0)")

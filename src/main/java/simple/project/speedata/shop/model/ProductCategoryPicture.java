@@ -14,7 +14,6 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
-import simple.base.BaseValiditySupportModel;
 import simple.config.annotation.DataLength;
 import simple.config.annotation.Domain;
 import simple.config.annotation.RepresentationField;
@@ -27,7 +26,7 @@ import simple.config.annotation.TableColumn;
 @SequenceGenerator(name = "SEQ_SPEEDATA_PRODUCT_CATEGORY_PICTURE", sequenceName = "SEQ_SPEEDATA_PRODUCT_CATEGORY_PICTURE")
 @GenericGenerator(name = "idStrategy", strategy = "native", parameters = {
 		@Parameter(name = "sequence", value = "SEQ_SPEEDATA_PRODUCT_CATEGORY_PICTURE") })
-public class ProductCategoryPicture extends BaseValiditySupportModel implements Serializable {
+public class ProductCategoryPicture implements Serializable {
 
 	private static final long serialVersionUID = -2222299541763024789L;
 

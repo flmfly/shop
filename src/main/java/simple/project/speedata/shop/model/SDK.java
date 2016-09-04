@@ -21,9 +21,11 @@ import simple.base.BaseModel;
 import simple.config.annotation.AssociateTableColumn;
 import simple.config.annotation.Attachment;
 import simple.config.annotation.Domain;
+import simple.config.annotation.ImageGalleryTableColumn;
 import simple.config.annotation.Reference;
 import simple.config.annotation.RepresentationField;
 import simple.config.annotation.RepresentationFieldType;
+import simple.config.annotation.TableColumn;
 import simple.config.annotation.Title;
 import simple.core.validation.annotation.UniqueKey;
 
@@ -50,6 +52,8 @@ public class SDK extends BaseModel implements Serializable {
 	@Title("文件")
 	@RepresentationField(view = RepresentationFieldType.ATTACHMENT)
 	@Attachment(fileName = "fileName", url = "url", size = "size", maxSize = 2097152 * 100)
+	@ImageGalleryTableColumn(field = "attachment", url = "url", isFileStyle = true, isArray = true, fileNameProperty = "fileName")
+	@TableColumn(title = "文件", sort = 285)
 	private Set<SDKAttachment> sdkAttachments = new HashSet<SDKAttachment>(0);
 
 	public Product getProduct() {

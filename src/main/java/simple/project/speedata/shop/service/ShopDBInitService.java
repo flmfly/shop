@@ -18,7 +18,6 @@ import simple.base.model.BaseDict;
 import simple.base.model.BaseDictItem;
 import simple.base.model.BaseMenu;
 import simple.base.model.BaseResource;
-import simple.base.model.BaseUser;
 import simple.core.service.BaseService;
 
 @Service
@@ -63,6 +62,9 @@ public class ShopDBInitService implements InitializingBean {
 		bm = this.insertIfNotExist(bm, "code", bm.getCode());
 
 		this.saveMenu("shop_trade", "行业应用", "/tree/trade", "020001", "fa fa-industry", 10, bm);
+		this.saveMenu("shop_company", "公司风采", "/tree/company", "020002", "fa fa-building", 20, bm);
+		this.saveMenu("shop_promotion", "促销活动", "/tree/promotion", "020003", "fa fa-flag", 30, bm);
+		this.saveMenu("shop_oem", "OEM", "/tree/oem", "020004", "fa fa-cog", 40, bm);
 
 		bm = new BaseMenu();
 		bm.setCode("030");
@@ -103,16 +105,16 @@ public class ShopDBInitService implements InitializingBean {
 		// null, bd);
 		// this.saveBaseDictItem("userStateLocked", "锁定", null, bd);
 		//
-		// BaseDict bd1 = new BaseDict();
-		// bd1.setCode("userType");
-		// bd1.setName("用户类型");
-		//
-		// bd1 = this.insertIfNotExist(bd1, "code", bd1.getCode());
-		//
-		// BaseDictItem bdi1 = this.saveBaseDictItem("userTypeAdmin", "管理员",
+		BaseDict bd1 = new BaseDict();
+		bd1.setCode("userType");
+		bd1.setName("用户类型");
+
+		bd1 = this.insertIfNotExist(bd1, "code", bd1.getCode());
+
+		// BaseDictItem bdi1 = this.saveBaseDictItem("userTypeWechart", "微信用户",
 		// null,
-		// bd1);
-		// this.saveBaseDictItem("userTypeRegist", "注册用户", null, bd1);
+		// bd1, 9999l);
+		this.saveBaseDictItem("userTypeWechart", "微信用户", null, bd1);
 		//
 		// BaseDict smsOperateState = new BaseDict();
 		// smsOperateState.setCode("smsOperateState");

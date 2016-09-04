@@ -10,7 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.DecimalMax;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -21,13 +20,13 @@ import simple.config.annotation.RepresentationField;
 import simple.config.annotation.RepresentationFieldType;
 import simple.config.annotation.TableColumn;
 
-@Domain(defaultSort = "sort")
+@Domain
 @Entity
-@Table(name = "SPEEDATA_PRODUCT_PICTURE")
-@SequenceGenerator(name = "SEQ_SPEEDATA_PRODUCT_PICTURE", sequenceName = "SEQ_SPEEDATA_PRODUCT_PICTURE")
+@Table(name = "SPEEDATA_PROMOTION_PICTURE")
+@SequenceGenerator(name = "SEQ_SPEEDATA_PRODUCT_PICTURE", sequenceName = "SEQ_SPEEDATA_PROMOTION_PICTURE")
 @GenericGenerator(name = "idStrategy", strategy = "native", parameters = {
-		@Parameter(name = "sequence", value = "SEQ_SPEEDATA_PRODUCT_PICTURE") })
-public class ProductPicture implements Serializable {
+		@Parameter(name = "sequence", value = "SEQ_SPEEDATA_PROMOTION_PICTURE") })
+public class PromotionPicture implements Serializable {
 
 	private static final long serialVersionUID = -2222299541763024789L;
 
@@ -39,8 +38,8 @@ public class ProductPicture implements Serializable {
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "PRODUCT_ID")
-	private Product product;
+	@JoinColumn(name = "PROMOTION_ID")
+	private Promotion promotion;
 
 	@Column(name = "FILE_NAME", length = DataLength.NAME_LENGTH)
 	@RepresentationField(title = "附件名称", sort = 50)
@@ -57,11 +56,6 @@ public class ProductPicture implements Serializable {
 	@RepresentationField(title = "尺寸", sort = 40)
 	private Long size;
 
-	@Column(name = "SORT", columnDefinition = "NUMERIC(4,0)")
-	@RepresentationField(sort = 50, title = "排序")
-	@DecimalMax(value = "9999")
-	private Integer sort;
-
 	public Long getId() {
 		return id;
 	}
@@ -70,12 +64,12 @@ public class ProductPicture implements Serializable {
 		this.id = id;
 	}
 
-	public Product getProduct() {
-		return product;
+	public Promotion getPromotion() {
+		return promotion;
 	}
 
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setPromotion(Promotion promotion) {
+		this.promotion = promotion;
 	}
 
 	public String getFileName() {
@@ -100,14 +94,6 @@ public class ProductPicture implements Serializable {
 
 	public void setSize(Long size) {
 		this.size = size;
-	}
-
-	public Integer getSort() {
-		return sort;
-	}
-
-	public void setSort(Integer sort) {
-		this.sort = sort;
 	}
 
 }
