@@ -23,15 +23,10 @@ import simple.config.annotation.Attachment;
 import simple.config.annotation.DataLength;
 import simple.config.annotation.Domain;
 import simple.config.annotation.ImageGalleryTableColumn;
-import simple.config.annotation.Operation;
-import simple.config.annotation.OperationTarget;
 import simple.config.annotation.RepresentationField;
 import simple.config.annotation.RepresentationFieldType;
 import simple.config.annotation.StandardOperation;
 import simple.config.annotation.TableColumn;
-import simple.config.annotation.TreeInfo;
-import simple.core.validation.annotation.UniqueKey;
-import simple.project.speedata.shop.support.ProductSyncOperation;
 
 @Domain(value = "产品")
 @Entity
