@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
@@ -14,12 +16,12 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.validator.constraints.Length;
 
-import simple.base.BaseValiditySupportModel;
 import simple.base.model.BaseDictItem;
 import simple.config.annotation.AssociateTableColumn;
 import simple.config.annotation.DataLength;
 import simple.config.annotation.DictField;
 import simple.config.annotation.Domain;
+import simple.config.annotation.ExtentionPoint;
 import simple.config.annotation.Reference;
 import simple.config.annotation.RepresentationField;
 import simple.config.annotation.RepresentationFieldType;
@@ -30,11 +32,19 @@ import simple.config.annotation.Title;
 @Entity
 @Table(name = "SPEEDATA_WECHART_USER")
 @SequenceGenerator(name = "SEQ_SPEEDATA_WECHART_USER", sequenceName = "SEQ_SPEEDATA_WECHART_USER")
+@ExtentionPoint("simple.project.speedata.shop.support.WechartUserExtentionPoint")
 @GenericGenerator(name = "idStrategy", strategy = "native", parameters = {
 		@Parameter(name = "sequence", value = "SEQ_SPEEDATA_WECHART_USER") })
-public class WechartUser extends BaseValiditySupportModel implements Serializable {
+public class WechartUser implements Serializable {
 
 	private static final long serialVersionUID = -2222299541763024789L;
+
+	@Id
+	@GeneratedValue(generator = "idStrategy")
+	@Column(name = "ID")
+	@RepresentationField(view = RepresentationFieldType.HIDDEN)
+	@TableColumn(title = "id", show = false)
+	private Long id;
 
 	@Column(name = "REMOTE_ID")
 	@Title("外部系统ID")
@@ -45,7 +55,7 @@ public class WechartUser extends BaseValiditySupportModel implements Serializabl
 	@RepresentationField(sort = 10, title = "微信号", isSearchField = true)
 	@TableColumn(title = "微信号")
 	@Length(max = DataLength.CODE_LENGTH)
-	private String wechartId;
+	private String account;
 
 	@Column(name = "COMPANY", length = DataLength.CODE_LENGTH)
 	@RepresentationField(sort = 10, title = "公司名称", isSearchField = true)
@@ -86,6 +96,14 @@ public class WechartUser extends BaseValiditySupportModel implements Serializabl
 	@Length(max = DataLength.REMARK_LENGTH)
 	private String address;
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public Long getRemoteId() {
 		return remoteId;
 	}
@@ -94,12 +112,12 @@ public class WechartUser extends BaseValiditySupportModel implements Serializabl
 		this.remoteId = remoteId;
 	}
 
-	public String getWechartId() {
-		return wechartId;
+	public String getAccount() {
+		return account;
 	}
 
-	public void setWechartId(String wechartId) {
-		this.wechartId = wechartId;
+	public void setAccount(String account) {
+		this.account = account;
 	}
 
 	public String getCompany() {
@@ -149,5 +167,4 @@ public class WechartUser extends BaseValiditySupportModel implements Serializabl
 	public void setAddress(String address) {
 		this.address = address;
 	}
-
 }

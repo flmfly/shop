@@ -20,13 +20,52 @@ import org.springframework.stereotype.Service;
 import simple.core.service.BaseService;
 import simple.project.speedata.shop.model.Product;
 import simple.project.speedata.shop.model.ProductCategory;
+import simple.project.speedata.shop.model.WechartUser;
 
 @Service
 public class AikeSyncService extends BaseService {
 
 	private static final String TOKEN = "04a244290d181f822a8353b5cab73465";
 
-	private static final String PRODUCT_SYNC_URL = "https://dingtalk.e.ikcrm.com/api/v2/products";
+	private static final String URL_PREFIX = "https://dingtalk.e.ikcrm.com/api/v2";
+
+	private static final String PRODUCT_SYNC_URL = URL_PREFIX + "/products";
+
+	private static final String CUSTOMER__URL = URL_PREFIX + "/customers";
+
+	public WechartUser getUser(long remoteId) {
+		try {
+			HttpClient httpClient = HttpClientBuilder.create().build();
+			HttpGet getRequest = new HttpGet(CUSTOMER__URL + "/" + remoteId);
+
+			getRequest.addHeader("accept", "application/json");
+			getRequest.addHeader("Authorization",
+					"Token token=\"" + TOKEN + "\",version_code=\"3.3.0\",device=\"dingtalk\"");
+
+			HttpResponse response = httpClient.execute(getRequest);
+
+			if (response.getStatusLine().getStatusCode() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
+			}
+
+			JSONObject jsonObject = new JSONObject(IOUtils.toString(response.getEntity().getContent()));
+			int code = jsonObject.getInt("code");
+
+			if (code == 0) {
+
+			}
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	public void saveOrUpdateUser(WechartUser user) {
+
+	}
 
 	@SuppressWarnings("unchecked")
 	public void syncProducts() {
