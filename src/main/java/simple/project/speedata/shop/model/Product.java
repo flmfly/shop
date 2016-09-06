@@ -131,7 +131,7 @@ public class Product extends BaseValiditySupportModel implements Serializable {
 	private BaseDictItem communicate;
 
 	@ManyToOne
-	@JoinColumn(name = "COMMUNICATE")
+	@JoinColumn(name = "WIFI")
 	@RepresentationField(sort = 70, title = "WIFI", view = RepresentationFieldType.SELECT, isSearchField = true)
 	@DictField("wifi")
 	@Reference(id = "id", label = "name")

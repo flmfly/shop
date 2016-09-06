@@ -10,7 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -87,7 +86,6 @@ public class WechartUser implements Serializable {
 	@DictField("trade")
 	@Reference(id = "id", label = "name")
 	@AssociateTableColumn(titles = "应用行业", columns = "name", sorts = "50")
-	@NotNull(message = "状态不能为空！")
 	private BaseDictItem trade;
 
 	@Column(name = "ADDRESS", length = DataLength.REMARK_LENGTH)
