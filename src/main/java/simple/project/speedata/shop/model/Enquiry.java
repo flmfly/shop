@@ -1,10 +1,13 @@
 package simple.project.speedata.shop.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
@@ -16,8 +19,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.validator.constraints.Length;
 
-import simple.base.BaseModel;
-import simple.base.model.BaseUser;
+import simple.config.annotation.AssociateTableColumn;
+import simple.config.annotation.AutoFill;
 import simple.config.annotation.BooleanValue;
 import simple.config.annotation.DataLength;
 import simple.config.annotation.Domain;
@@ -25,21 +28,33 @@ import simple.config.annotation.Operation;
 import simple.config.annotation.RepresentationField;
 import simple.config.annotation.RepresentationFieldType;
 import simple.config.annotation.TableColumn;
+import simple.config.annotation.support.CurrentDateAutoFillHandler;
 import simple.core.jpa.convert.BooleanToStringConverter;
-import simple.core.validation.annotation.UniqueKey;
 import simple.project.speedata.shop.support.EnquiryApproveOperation;
 
 @Domain
 @Entity
 @Table(name = "SPEEDATA_ENQUIRY")
-@UniqueKey(columnNames = { "name" }, message = "行业名称已存在！")
 @Operation(handler = EnquiryApproveOperation.class, code = "approve", name = "审核通过", multi = true, iconStyle = "fa fa-check")
 @SequenceGenerator(name = "SEQ_SPEEDATA_ENQUIRY", sequenceName = "SEQ_SPEEDATA_ENQUIRY")
 @GenericGenerator(name = "idStrategy", strategy = "native", parameters = {
 		@Parameter(name = "sequence", value = "SEQ_SPEEDATA_ENQUIRY") })
-public class Enquiry extends BaseModel implements Serializable {
+public class Enquiry implements Serializable {
 
 	private static final long serialVersionUID = 361702473050426893L;
+
+	@Id
+	@GeneratedValue(generator = "idStrategy")
+	@Column(name = "ID")
+	@RepresentationField(view = RepresentationFieldType.HIDDEN)
+	@TableColumn(title = "id", show = false)
+	private Long id;
+
+	@Column(name = "CREATE_TIME")
+	@RepresentationField(title = "请求时间", sort = 99996, view = RepresentationFieldType.DATETIME, disable = true)
+	@AutoFill(handler = CurrentDateAutoFillHandler.class)
+	@TableColumn(title = "请求时间")
+	private Date createTime;
 
 	@Column(name = "PROJECT", length = DataLength.LONG_TEXT_LENGTH)
 	@RepresentationField(sort = 10, title = "项目名称", isSearchField = true, disable = true)
@@ -75,7 +90,8 @@ public class Enquiry extends BaseModel implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "USER_ID")
-	private BaseUser user;
+	@AssociateTableColumn(titles = "请求用户", columns = "account")
+	private WechartUser user;
 
 	public String getProject() {
 		return project;
@@ -117,12 +133,28 @@ public class Enquiry extends BaseModel implements Serializable {
 		this.email = email;
 	}
 
-	public BaseUser getUser() {
+	public WechartUser getUser() {
 		return user;
 	}
 
-	public void setUser(BaseUser user) {
+	public void setUser(WechartUser user) {
 		this.user = user;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
 }

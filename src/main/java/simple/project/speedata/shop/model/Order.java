@@ -25,9 +25,11 @@ import simple.config.annotation.BooleanValue;
 import simple.config.annotation.DataLength;
 import simple.config.annotation.DictField;
 import simple.config.annotation.Domain;
+import simple.config.annotation.ExtentionPoint;
 import simple.config.annotation.Reference;
 import simple.config.annotation.RepresentationField;
 import simple.config.annotation.RepresentationFieldType;
+import simple.config.annotation.StandardOperation;
 import simple.config.annotation.TableColumn;
 import simple.config.annotation.Title;
 import simple.config.annotation.support.CurrentDateAutoFillHandler;
@@ -36,6 +38,8 @@ import simple.project.speedata.shop.view.ProductView;
 
 @Domain("订单")
 @Entity
+@StandardOperation(delete = false, modify = false, add = false, imp = false)
+@ExtentionPoint("simple.project.speedata.shop.support.OrderExtentionPoint")
 @Table(name = "SPEEDATA_ORDER")
 @SequenceGenerator(name = "SEQ_SPEEDATA_ORDER", sequenceName = "SEQ_SPEEDATA_ORDER")
 @GenericGenerator(name = "idStrategy", strategy = "native", parameters = {
@@ -100,7 +104,7 @@ public class Order implements Serializable {
 	@AssociateTableColumn(titles = "状态", columns = "name", sorts = "50")
 	private BaseDictItem state;
 
-	@Column(name = "IS_MD5", columnDefinition = "CHAR(1)")
+	@Column(name = "IS_PROTOTYPE", columnDefinition = "CHAR(1)")
 	@RepresentationField(sort = 80, title = "样机订单", view = RepresentationFieldType.BOOLEAN, defaultVal = "false")
 	@BooleanValue({ "是", "否" })
 	@Convert(converter = BooleanToStringConverter.class)
@@ -110,7 +114,7 @@ public class Order implements Serializable {
 	@JoinColumn(name = "USER_ID")
 	@RepresentationField(sort = 5, title = "所属用户", view = RepresentationFieldType.REFERENCE, isSearchField = true, disable = true)
 	@Reference(id = "id", label = "company")
-	@AssociateTableColumn(titles = "所属用户,公司", columns = "wechartId,company")
+	@AssociateTableColumn(titles = "所属用户,公司", columns = "account,company")
 	private WechartUser user;
 
 	@Column(name = "CREATE_TIME")

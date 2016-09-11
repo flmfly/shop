@@ -54,6 +54,11 @@ public class ProductView implements Serializable {
 	@TableColumn(title = "id", show = false)
 	private Long id;
 
+	@Column(name = "REMOTE_ID")
+	@Title("外部系统ID")
+	@RepresentationField(sort = 5, disable = true)
+	private Long remoteId;
+
 	@Column(name = "IS_VALID", columnDefinition = "CHAR(1)")
 	@Title("是否有效")
 	@RepresentationField(sort = 99995, view = RepresentationFieldType.BOOLEAN, defaultVal = "true")
@@ -123,6 +128,14 @@ public class ProductView implements Serializable {
 
 	public void setAttachment(Set<ProductPicture> attachment) {
 		this.attachment = attachment;
+	}
+
+	public Long getRemoteId() {
+		return remoteId;
+	}
+
+	public void setRemoteId(Long remoteId) {
+		this.remoteId = remoteId;
 	}
 
 }

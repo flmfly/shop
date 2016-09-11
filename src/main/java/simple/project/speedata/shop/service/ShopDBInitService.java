@@ -75,6 +75,7 @@ public class ShopDBInitService implements InitializingBean {
 
 		this.saveMenu("shop_enquiry", "报价列表", "/list/enquiry", "030001", "fa fa-money", 10, bm);
 		this.saveMenu("shop_sdk_request", "SDK下载请求", "/list/sdkrequest", "030002", "fa fa-download", 20, bm);
+		this.saveMenu("shop_order", "订单", "/list/order", "030003", "fa fa-file-text-o", 30, bm);
 
 		// this.saveMenu("base_resource", "资源维护", "/list/baseresource",
 		// "001001",

@@ -18,12 +18,10 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.validator.constraints.Length;
 
-import simple.base.model.BaseUser;
 import simple.config.annotation.AssociateTableColumn;
 import simple.config.annotation.AutoFill;
 import simple.config.annotation.BooleanValue;
 import simple.config.annotation.DataLength;
-import simple.config.annotation.DefaultValue;
 import simple.config.annotation.Domain;
 import simple.config.annotation.Reference;
 import simple.config.annotation.RepresentationField;
@@ -33,7 +31,6 @@ import simple.config.annotation.StandardOperation;
 import simple.config.annotation.TableColumn;
 import simple.config.annotation.Title;
 import simple.config.annotation.support.CurrentDateTimeAutoFillHandler;
-import simple.config.annotation.support.DateTimeDefaultValueHandler;
 import simple.core.jpa.convert.BooleanToStringConverter;
 
 @Domain
@@ -65,8 +62,8 @@ public class SDKRequest implements Serializable {
 	@JoinColumn(name = "USER_ID")
 	@RepresentationField(sort = 5, title = "请求用户", view = RepresentationFieldType.REFERENCE, isSearchField = true)
 	@Reference(id = "id", label = "name")
-	@AssociateTableColumn(titles = "请求用户", columns = "name")
-	private BaseUser user;
+	@AssociateTableColumn(titles = "请求用户", columns = "account")
+	private WechartUser user;
 
 	@Column(name = "EMAIL", length = DataLength.LONG_TEXT_LENGTH)
 	@Title("邮箱")
@@ -83,7 +80,6 @@ public class SDKRequest implements Serializable {
 	@TableColumn(title = "请求下载时间")
 	@SearchField(isRange = true)
 	@AutoFill(handler = CurrentDateTimeAutoFillHandler.class)
-	@DefaultValue(handler = DateTimeDefaultValueHandler.class)
 	private Date createTime;
 
 	@Column(name = "IS_SENT", columnDefinition = "CHAR(1)")
@@ -135,11 +131,11 @@ public class SDKRequest implements Serializable {
 		this.createTime = createTime;
 	}
 
-	public BaseUser getUser() {
+	public WechartUser getUser() {
 		return user;
 	}
 
-	public void setUser(BaseUser user) {
+	public void setUser(WechartUser user) {
 		this.user = user;
 	}
 
