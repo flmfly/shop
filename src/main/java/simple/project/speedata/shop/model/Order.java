@@ -18,17 +18,16 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.validator.constraints.Length;
 
-import simple.base.model.BaseDictItem;
 import simple.config.annotation.AssociateTableColumn;
 import simple.config.annotation.AutoFill;
 import simple.config.annotation.BooleanValue;
 import simple.config.annotation.DataLength;
-import simple.config.annotation.DictField;
 import simple.config.annotation.Domain;
 import simple.config.annotation.ExtentionPoint;
 import simple.config.annotation.Reference;
 import simple.config.annotation.RepresentationField;
 import simple.config.annotation.RepresentationFieldType;
+import simple.config.annotation.SearchField;
 import simple.config.annotation.StandardOperation;
 import simple.config.annotation.TableColumn;
 import simple.config.annotation.Title;
@@ -96,16 +95,15 @@ public class Order implements Serializable {
 	@Length(max = DataLength.REMARK_LENGTH)
 	private String remark;
 
-	@ManyToOne
-	@JoinColumn(name = "STATE_ID")
-	@RepresentationField(sort = 70, title = "状态", view = RepresentationFieldType.SELECT, isSearchField = true)
-	@DictField("orderState")
-	@Reference(id = "id", label = "name")
-	@AssociateTableColumn(titles = "状态", columns = "name", sorts = "50")
-	private BaseDictItem state;
+	@Column(name = "STATE")
+	@RepresentationField(sort = 70, title = "状态", isSearchField = true)
+	@TableColumn(title = "状态", sort = 50)
+	private String state;
 
 	@Column(name = "IS_PROTOTYPE", columnDefinition = "CHAR(1)")
 	@RepresentationField(sort = 80, title = "样机订单", view = RepresentationFieldType.BOOLEAN, defaultVal = "false")
+	@SearchField
+	@TableColumn(title = "样机订单")
 	@BooleanValue({ "是", "否" })
 	@Convert(converter = BooleanToStringConverter.class)
 	private Boolean isPrototype;
@@ -202,11 +200,11 @@ public class Order implements Serializable {
 		this.remark = remark;
 	}
 
-	public BaseDictItem getState() {
+	public String getState() {
 		return state;
 	}
 
-	public void setState(BaseDictItem state) {
+	public void setState(String state) {
 		this.state = state;
 	}
 

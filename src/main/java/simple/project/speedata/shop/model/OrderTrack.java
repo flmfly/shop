@@ -11,26 +11,26 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
-import simple.base.model.BaseDictItem;
 import simple.config.annotation.AssociateTableColumn;
 import simple.config.annotation.AutoFill;
 import simple.config.annotation.AutoFillTrigger;
-import simple.config.annotation.DictField;
 import simple.config.annotation.Domain;
-import simple.config.annotation.Reference;
+import simple.config.annotation.Operation;
+import simple.config.annotation.OperationTarget;
 import simple.config.annotation.RepresentationField;
 import simple.config.annotation.RepresentationFieldType;
 import simple.config.annotation.TableColumn;
 import simple.config.annotation.support.CurrentDateTimeAutoFillHandler;
+import simple.project.speedata.shop.support.OrderTrackSyncOperation;
 
-@Domain("订单")
+@Domain("订单状态追踪")
 @Entity
 @Table(name = "SPEEDATA_ORDER_TRACK")
+@Operation(code = "refresh", iconStyle = "fa fa-refresh", handler = OrderTrackSyncOperation.class, multi = true, name = "同步", target = OperationTarget.ALL)
 @SequenceGenerator(name = "SEQ_SPEEDATA_ORDER_TRACK", sequenceName = "SEQ_SPEEDATA_ORDER_TRACK")
 @GenericGenerator(name = "idStrategy", strategy = "native", parameters = {
 		@Parameter(name = "sequence", value = "SEQ_SPEEDATA_ORDER_TRACK") })
@@ -51,14 +51,10 @@ public class OrderTrack implements Serializable {
 	@AssociateTableColumn(titles = "订单", columns = "remoteId")
 	private Order order;
 
-	@ManyToOne
-	@JoinColumn(name = "STATE_ID")
-	@RepresentationField(sort = 70, title = "状态", view = RepresentationFieldType.SELECT, isSearchField = true)
-	@DictField("orderState")
-	@Reference(id = "id", label = "name")
-	@AssociateTableColumn(titles = "状态", columns = "name", sorts = "50")
-	@NotNull(message = "状态不能为空！")
-	private BaseDictItem state;
+	@Column(name = "STATE")
+	@RepresentationField(sort = 70, title = "状态", isSearchField = true)
+	@TableColumn(title = "状态", sort = 50)
+	private String state;
 
 	@Column(name = "RECORD_TIME")
 	@RepresentationField(title = "记录时间", sort = 99998, view = RepresentationFieldType.DATETIME, disable = true)
@@ -81,11 +77,11 @@ public class OrderTrack implements Serializable {
 		this.order = order;
 	}
 
-	public BaseDictItem getState() {
+	public String getState() {
 		return state;
 	}
 
-	public void setState(BaseDictItem state) {
+	public void setState(String state) {
 		this.state = state;
 	}
 

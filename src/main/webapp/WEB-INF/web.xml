@@ -85,7 +85,7 @@
 		<filter-class>simple.base.web.filter.SecurityFilter</filter-class>
 		<init-param>
 			<param-name>ignore</param-name>
-			<param-value>/base/login,/base/user,/mobile/login,/mobile/upgrade,/mobile/write,/mobile/read,/ws/api/read,/ws/api/write,/base/menu,/base/loginuser,/base/changepassword,/base/logout,/base/sendSms,/base/register,/base/message,/base/message/setread,/func/api</param-value>
+			<param-value>/base/login,/base/user,/mobile/login,/mobile/upgrade,/mobile/write,/mobile/read,/ws/api/read,/ws/api/write,/base/menu,/base/loginuser,/base/changepassword,/base/logout,/base/sendSms,/base/register,/base/message,/base/message/setread,/func/api,/shop/select</param-value>
 		</init-param>
 	</filter>
 	<filter-mapping>

@@ -52,6 +52,10 @@ public class ShopDBInitService implements InitializingBean {
 
 		this.saveMenu("shop_product_category", "产品分类", "/list/productcategory", "010001", "fa fa-th-large", 10, bm);
 		this.saveMenu("shop_product", "产品", "/list/product", "010002", "fa fa-product-hunt", 20, bm);
+		this.saveMenu("shop_product_tag_category", "产品特征分类", "/list/producttagcategory", "010004", "fa fa-product-hunt",
+				24, bm);
+		this.saveMenu("shop_product_tag", "产品特征", "/tree/producttag/producttagcategory/category", "010005",
+				"fa fa-product-hunt", 26, bm);
 		this.saveMenu("shop_sdk", "SDK维护", "/list/sdk", "010003", "fa fa-suitcase", 30, bm);
 
 		bm = new BaseMenu();
@@ -76,6 +80,7 @@ public class ShopDBInitService implements InitializingBean {
 		this.saveMenu("shop_enquiry", "报价列表", "/list/enquiry", "030001", "fa fa-money", 10, bm);
 		this.saveMenu("shop_sdk_request", "SDK下载请求", "/list/sdkrequest", "030002", "fa fa-download", 20, bm);
 		this.saveMenu("shop_order", "订单", "/list/order", "030003", "fa fa-file-text-o", 30, bm);
+		this.saveMenu("shop_order_track", "订单追踪", "/list/ordertrack", "030004", "fa fa-file-text-o", 40, bm);
 
 		// this.saveMenu("base_resource", "资源维护", "/list/baseresource",
 		// "001001",

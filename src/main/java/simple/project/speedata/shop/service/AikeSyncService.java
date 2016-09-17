@@ -19,12 +19,15 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import simple.core.service.BaseService;
 import simple.project.speedata.shop.model.Order;
+import simple.project.speedata.shop.model.OrderTrack;
 import simple.project.speedata.shop.model.Product;
 import simple.project.speedata.shop.model.ProductCategory;
 import simple.project.speedata.shop.model.WechartUser;
@@ -132,7 +135,7 @@ public class AikeSyncService extends BaseService {
 			post.addHeader("Authorization", "Token token=\"" + TOKEN + "\",version_code=\"3.3.0\",device=\"dingtalk\"");
 			String date = SDF.format(new Date());
 			String postData = "{\"contract\":{\"customer_id\": " + order.getUser().getRemoteId() + ",\"title\": \"微信"
-					+ (order.getIsPrototype() ? "样机" : "") + "合同-" + order.getUser().getCompany() + "-"
+					+ (order.getIsPrototype() ? "样机" : "购货") + "合同-" + order.getUser().getCompany() + "-"
 					+ order.getUser().getAccount() + "\",\"start_at\": \"" + date + "\",\"end_at\": \"" + date
 					+ "\",\"approve_status\": \"approved\"}}";
 			post.setEntity(new StringEntity(postData, ContentType.APPLICATION_JSON));
@@ -147,6 +150,13 @@ public class AikeSyncService extends BaseService {
 
 			if (code == 0) {
 				order.setRemoteId(jsonObject.getJSONObject("data").getLong("id"));
+				order.setState("待审批");
+
+				OrderTrack ot = new OrderTrack();
+				ot.setOrder(order);
+				ot.setRecordTime(new Date());
+				ot.setState("待审批");
+				super.save(ot);
 				return true;
 			} else {
 				return false;
@@ -340,6 +350,47 @@ public class AikeSyncService extends BaseService {
 		} else {
 			throw new RuntimeException("Failed : API error code : " + code);
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public void fetchOrderStates() {
+		Criteria c = super.hibernateBaseDAO.getCriteria(Order.class);
+		c.add(Restrictions.or(Restrictions.ne("state", "成功结束"), Restrictions.ne("state", "已删除")));
+
+		List<Order> orderList = c.list();
+
+		try {
+			for (Order order : orderList) {
+				HttpClient httpClient = HttpClientBuilder.create().build();
+				HttpGet get = new HttpGet(ORDER_URL + "/" + order.getRemoteId());
+				get.addHeader("accept", "application/json");
+				get.addHeader("Authorization",
+						"Token token=\"" + TOKEN + "\",version_code=\"3.3.0\",device=\"dingtalk\"");
+
+				HttpResponse response = httpClient.execute(get);
+				if (response.getStatusLine().getStatusCode() == 200) {
+
+					JSONObject jsonObject = new JSONObject(IOUtils.toString(response.getEntity().getContent()));
+					String newStatus = jsonObject.getJSONObject("data").getString("status_mapped");
+
+					if (!"".equals(newStatus) && !order.getState().equals(newStatus)) {
+						order.setState(newStatus);
+
+						OrderTrack ot = new OrderTrack();
+						ot.setOrder(order);
+						ot.setRecordTime(new Date());
+						ot.setState(newStatus);
+						super.save(ot);
+						super.save(order);
+					}
+				}
+			}
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public static void main(String[] args) {
