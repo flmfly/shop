@@ -132,7 +132,7 @@ public class AikeSyncService extends BaseService {
 			post.addHeader("Authorization", "Token token=\"" + TOKEN + "\",version_code=\"3.3.0\",device=\"dingtalk\"");
 			String date = SDF.format(new Date());
 			String postData = "{\"contract\":{\"customer_id\": " + order.getUser().getRemoteId() + ",\"title\": \"微信"
-					+ (order.getIsPrototype() ? "样机" : "") + "合同-" + order.getUser().getCompany() + "-"
+					+ (order.getIsPrototype() ? "样机" : "购货") + "合同-" + order.getUser().getCompany() + "-"
 					+ order.getUser().getAccount() + "\",\"start_at\": \"" + date + "\",\"end_at\": \"" + date
 					+ "\",\"approve_status\": \"approved\"}}";
 			post.setEntity(new StringEntity(postData, ContentType.APPLICATION_JSON));
@@ -147,6 +147,7 @@ public class AikeSyncService extends BaseService {
 
 			if (code == 0) {
 				order.setRemoteId(jsonObject.getJSONObject("data").getLong("id"));
+				order.setState("待审批");
 				return true;
 			} else {
 				return false;

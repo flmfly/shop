@@ -52,6 +52,8 @@ public class ShopDBInitService implements InitializingBean {
 
 		this.saveMenu("shop_product_category", "产品分类", "/list/productcategory", "010001", "fa fa-th-large", 10, bm);
 		this.saveMenu("shop_product", "产品", "/list/product", "010002", "fa fa-product-hunt", 20, bm);
+		this.saveMenu("shop_product_tag_category", "产品特征分类", "/list/producttagcategory", "010004", "fa fa-product-hunt", 24, bm);
+		this.saveMenu("shop_product_tag", "产品特征", "/tree/producttag/producttagcategory/category", "010005", "fa fa-product-hunt", 26, bm);
 		this.saveMenu("shop_sdk", "SDK维护", "/list/sdk", "010003", "fa fa-suitcase", 30, bm);
 
 		bm = new BaseMenu();
