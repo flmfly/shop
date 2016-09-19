@@ -19,8 +19,10 @@ import simple.config.annotation.AssociateTableColumn;
 import simple.config.annotation.AutoFill;
 import simple.config.annotation.AutoFillTrigger;
 import simple.config.annotation.Domain;
+
 import simple.config.annotation.Operation;
 import simple.config.annotation.OperationTarget;
+
 import simple.config.annotation.RepresentationField;
 import simple.config.annotation.RepresentationFieldType;
 import simple.config.annotation.TableColumn;
