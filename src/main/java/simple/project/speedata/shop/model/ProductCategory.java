@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -66,6 +67,12 @@ public class ProductCategory extends BaseValiditySupportModel implements Seriali
 	@Attachment(fileName = "fileName", url = "url", size = "size", maxSize = 1024
 			* 1204, type = "image/gif,image/png,image/jpeg,image/jpg", width = 1024, height = 1024)
 	private Set<ProductCategoryPicture> attachment = new HashSet<ProductCategoryPicture>(0);
+
+	@Column(name = "INTRO")
+	@Title("商品分类介绍")
+	@Lob
+	@RepresentationField(view = RepresentationFieldType.HTML_EDITOR, sort = 60)
+	private String intro;
 
 	@Column(name = "SORT", columnDefinition = "NUMERIC(4,0)")
 	@RepresentationField(sort = 50, title = "排序")

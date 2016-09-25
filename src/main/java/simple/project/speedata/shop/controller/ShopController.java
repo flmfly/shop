@@ -6,12 +6,14 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import simple.core.Constants;
 import simple.core.model.DomainData;
 import simple.core.model.Status;
 import simple.project.speedata.shop.service.ShopService;
+import simple.project.speedata.shop.service.WechartService;
 
 /**
  * @author Jeffrey
@@ -24,6 +26,9 @@ public class ShopController implements Constants {
 	@Autowired
 	protected ShopService shopService;
 
+	@Autowired
+	protected WechartService wechartService;
+
 	/** The Constant logger. */
 	static final Logger logger = Logger.getLogger(ShopController.class);
 
@@ -32,6 +37,18 @@ public class ShopController implements Constants {
 		DomainData domainData = new DomainData();
 		try {
 			domainData.setData(this.shopService.select(json));
+		} catch (Exception e) {
+			e.printStackTrace();
+			domainData.setStatus(new Status(500, e.getMessage()));
+		}
+		return this.shopService.toJsonStrWithSubs(domainData);
+	}
+
+	@RequestMapping(value = "/openid", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	public String openid(@RequestParam("code") String code) {
+		DomainData domainData = new DomainData();
+		try {
+			domainData.setData(this.wechartService.getOpenId(code));
 		} catch (Exception e) {
 			e.printStackTrace();
 			domainData.setStatus(new Status(500, e.getMessage()));

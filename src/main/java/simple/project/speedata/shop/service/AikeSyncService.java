@@ -156,7 +156,7 @@ public class AikeSyncService extends BaseService {
 				ot.setOrder(order);
 				ot.setRecordTime(new Date());
 				ot.setState("待审批");
-				super.save(ot);
+				super.hibernateBaseDAO.save(ot);
 
 				return true;
 			} else {
